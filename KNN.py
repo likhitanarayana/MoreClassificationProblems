@@ -46,6 +46,7 @@ def one_hot_encode(dataset):
 
     return dataset
 
+
 def main(argv):
     training_dataset = argv[1]
     k = int(argv[2])
