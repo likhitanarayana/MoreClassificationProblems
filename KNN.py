@@ -12,38 +12,48 @@ def KNN(D, d, k):
     distances = []
 
     for row in D.itertuples():
-        #print("row = ")
-        #print(row)
         #calculate the distance between d and row
         attribute_length = len(row)-2
         for attribute in range(attribute_length):
             distance_to_dprime = 0
-            #print("attribute = ")
-            #print(attribute)
             distance_to_dprime += np.square(d[attribute] - row[attribute])
         sqrt_distance = np.sqrt(distance_to_dprime)
-        distances.append((distance_to_dprime, row[len(row)-1]))
+        distances.append((sqrt_distance, row[len(row)-1]))
 
     sort_distances = sorted(distances, key=lambda x:x[0])
-    neigbors_classification = []
+    neighbors_classification = []
 
     for x in range(k):
-        neigbors_classification.append(sort_distances[x][1])
+        neighbors_classification.append(sort_distances[x][1])
 
-    print("neighbors = {}".format(neigbors_classification))
+    print("neighbors = {}".format(neighbors_classification))
 
-    counter = Counter(neigbors_classification)
+    counter = Counter(neighbors_classification)
     print("classify = {}".format(counter.most_common(1)[0][0]))
     return counter.most_common(1)[0][0]
 
 
+def one_hot_encode(dataset):
+    cols = list(dataset)
+    cols.pop()
+
+    for col in cols:
+        element = dataset[col].iloc[0]
+        if isinstance(element, str):
+            one_hot = pd.get_dummies(dataset[[col]])
+            dataset = pd.merge(dataset, one_hot, left_index=True, right_index=True)
+            dataset.drop([col])#, axis=1, inplace=True)
+
+    return dataset
 
 def main(argv):
     training_dataset = argv[1]
-    to_be_classified = argv[2]
-    k = int(argv[3])
+    k = int(argv[2])
 
     training_dataset = pd.read_csv(training_dataset, header=None)
+
+    training_dataset = one_hot_encode(training_dataset)
+
     #print("dataset =")
     #print(training_dataset)
     classify = training_dataset.iloc[0]
