@@ -1,0 +1,538 @@
+
+c45 attributes = ['sepal_width', 'petal_length', 'petal_width', 'class'], df =
+     sepal_length  sepal_width  petal_length  petal_width           class
+0             5.1          3.5           1.4          0.2     Iris-setosa
+1             4.9          3.0           1.4          0.2     Iris-setosa
+2             4.7          3.2           1.3          0.2     Iris-setosa
+3             4.6          3.1           1.5          0.2     Iris-setosa
+4             5.0          3.6           1.4          0.2     Iris-setosa
+5             5.4          3.9           1.7          0.4     Iris-setosa
+6             4.6          3.4           1.4          0.3     Iris-setosa
+7             5.0          3.4           1.5          0.2     Iris-setosa
+8             4.4          2.9           1.4          0.2     Iris-setosa
+9             4.9          3.1           1.5          0.1     Iris-setosa
+10            5.4          3.7           1.5          0.2     Iris-setosa
+11            4.8          3.4           1.6          0.2     Iris-setosa
+12            4.8          3.0           1.4          0.1     Iris-setosa
+13            4.3          3.0           1.1          0.1     Iris-setosa
+14            5.8          4.0           1.2          0.2     Iris-setosa
+15            5.7          4.4           1.5          0.4     Iris-setosa
+16            5.4          3.9           1.3          0.4     Iris-setosa
+17            5.1          3.5           1.4          0.3     Iris-setosa
+18            5.7          3.8           1.7          0.3     Iris-setosa
+19            5.1          3.8           1.5          0.3     Iris-setosa
+20            5.4          3.4           1.7          0.2     Iris-setosa
+21            5.1          3.7           1.5          0.4     Iris-setosa
+22            4.6          3.6           1.0          0.2     Iris-setosa
+23            5.1          3.3           1.7          0.5     Iris-setosa
+24            4.8          3.4           1.9          0.2     Iris-setosa
+25            5.0          3.0           1.6          0.2     Iris-setosa
+26            5.0          3.4           1.6          0.4     Iris-setosa
+27            5.2          3.5           1.5          0.2     Iris-setosa
+28            5.2          3.4           1.4          0.2     Iris-setosa
+29            4.7          3.2           1.6          0.2     Iris-setosa
+..            ...          ...           ...          ...             ...
+120           6.9          3.2           5.7          2.3  Iris-virginica
+121           5.6          2.8           4.9          2.0  Iris-virginica
+122           7.7          2.8           6.7          2.0  Iris-virginica
+123           6.3          2.7           4.9          1.8  Iris-virginica
+124           6.7          3.3           5.7          2.1  Iris-virginica
+125           7.2          3.2           6.0          1.8  Iris-virginica
+126           6.2          2.8           4.8          1.8  Iris-virginica
+127           6.1          3.0           4.9          1.8  Iris-virginica
+128           6.4          2.8           5.6          2.1  Iris-virginica
+129           7.2          3.0           5.8          1.6  Iris-virginica
+130           7.4          2.8           6.1          1.9  Iris-virginica
+131           7.9          3.8           6.4          2.0  Iris-virginica
+132           6.4          2.8           5.6          2.2  Iris-virginica
+133           6.3          2.8           5.1          1.5  Iris-virginica
+134           6.1          2.6           5.6          1.4  Iris-virginica
+135           7.7          3.0           6.1          2.3  Iris-virginica
+136           6.3          3.4           5.6          2.4  Iris-virginica
+137           6.4          3.1           5.5          1.8  Iris-virginica
+138           6.0          3.0           4.8          1.8  Iris-virginica
+139           6.9          3.1           5.4          2.1  Iris-virginica
+140           6.7          3.1           5.6          2.4  Iris-virginica
+141           6.9          3.1           5.1          2.3  Iris-virginica
+142           5.8          2.7           5.1          1.9  Iris-virginica
+143           6.8          3.2           5.9          2.3  Iris-virginica
+144           6.7          3.3           5.7          2.5  Iris-virginica
+145           6.7          3.0           5.2          2.3  Iris-virginica
+146           6.3          2.5           5.0          1.9  Iris-virginica
+147           6.5          3.0           5.2          2.0  Iris-virginica
+148           6.2          3.4           5.4          2.3  Iris-virginica
+149           5.9          3.0           5.1          1.8  Iris-virginica
+
+[150 rows x 5 columns]
+in else
+in selectSplittingAttribute = sepal_width
+
+in enthropy_split: attributes sepal_width. splitx: 3.5
+len of data left = 132, len of data right = 18
+results = -1.458513574895515
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.0
+len of data left = 83, len of data right = 67
+results = -1.3243314053930995
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.2
+len of data left = 108, len of data right = 42
+results = -1.3359400011538498
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.1
+len of data left = 95, len of data right = 55
+results = -1.344380369985423
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.6
+len of data left = 135, len of data right = 15
+results = -1.4723130943235527
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.9
+len of data left = 146, len of data right = 4
+results = -1.541632777602583
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.4
+len of data left = 126, len of data right = 24
+results = -1.386952550809967
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.9
+len of data left = 57, len of data right = 93
+results = -1.336296325775044
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.7
+len of data left = 138, len of data right = 12
+results = -1.5041900718421424
+
+
+in enthropy_split: attributes sepal_width. splitx: 4.0
+len of data left = 147, len of data right = 3
+results = -1.5526702645641608
+
+
+in enthropy_split: attributes sepal_width. splitx: 4.4
+len of data left = 150, len of data right = 0
+results = -1.584962500721156
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.8
+len of data left = 144, len of data right = 6
+results = -1.5191239334011963
+
+
+in enthropy_split: attributes sepal_width. splitx: 3.3
+len of data left = 114, len of data right = 36
+results = -1.317051131531891
+
+
+in enthropy_split: attributes sepal_width. splitx: 4.1
+len of data left = 148, len of data right = 2
+results = -1.5635685273399773
+
+
+in enthropy_split: attributes sepal_width. splitx: 4.2
+len of data left = 149, len of data right = 1
+results = -1.5743313880649628
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.3
+len of data left = 8, len of data right = 142
+results = -1.5553184001467097
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.8
+len of data left = 47, len of data right = 103
+results = -1.3862656802795268
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.4
+len of data left = 11, len of data right = 139
+results = -1.5277068999197676
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.7
+len of data left = 33, len of data right = 117
+results = -1.4524823112716707
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.0
+len of data left = 1, len of data right = 149
+results = -1.5743313880649628
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.2
+len of data left = 4, len of data right = 146
+results = -1.5638682014339247
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.5
+len of data left = 19, len of data right = 131
+results = -1.5157982194787427
+
+
+in enthropy_split: attributes sepal_width. splitx: 2.6
+len of data left = 24, len of data right = 126
+results = -1.4940065500503135
+
+gains [(4.4, 3.169925001442312), (4.2, 3.159293888786119), (2.0, 3.159293888786119), (2.2, 3.148830702155081), (4.1, 3.148531028061133), (2.3, 3.140280900867866), (4.0, 3.137632765285317), (3.9, 3.126595278323739), (2.4, 3.1126694006409235), (3.8, 3.1040864341223524), (2.5, 3.100760720199899), (3.7, 3.0891525725632984), (2.6, 3.0789690507714695), (3.6, 3.057275595044709), (3.5, 3.043476075616671), (2.7, 3.0374448119928266), (3.4, 2.971915051531123), (2.8, 2.971228181000683), (3.1, 2.929342870706579), (2.9, 2.9212588264962003), (3.2, 2.920902501875006), (3.0, 2.9092939061142555), (3.3, 2.902013632253047)]
+
+called enthropy_split with attribute = sepal_width and best split x= 4.4
+
+in enthropy_split: attributes sepal_width. splitx: 4.4
+len of data left = 150, len of data right = 0
+results = -1.584962500721156
+
+p[attribute] = -1.584962500721156
+in selectSplittingAttribute = petal_length
+
+in enthropy_split: attributes petal_length. splitx: 1.4
+len of data left = 23, len of data right = 127
+results = -1.298635824561193
+
+
+in enthropy_split: attributes petal_length. splitx: 1.3
+len of data left = 11, len of data right = 139
+results = -1.4601100239697824
+
+
+in enthropy_split: attributes petal_length. splitx: 1.5
+len of data left = 37, len of data right = 113
+results = -1.05459258293073
+
+
+in enthropy_split: attributes petal_length. splitx: 1.7
+len of data left = 48, len of data right = 102
+results = -0.761345106024134
+
+
+in enthropy_split: attributes petal_length. splitx: 1.6
+len of data left = 44, len of data right = 106
+results = -0.8884278280126646
+
+
+in enthropy_split: attributes petal_length. splitx: 1.1
+len of data left = 2, len of data right = 148
+results = -1.5635685273399773
+
+
+in enthropy_split: attributes petal_length. splitx: 1.2
+len of data left = 4, len of data right = 146
+results = -1.541632777602583
+
+
+in enthropy_split: attributes petal_length. splitx: 1.0
+len of data left = 1, len of data right = 149
+results = -1.5743313880649628
+
+
+in enthropy_split: attributes petal_length. splitx: 1.9
+len of data left = 50, len of data right = 100
+results = -0.6666666666666666
+
+
+in enthropy_split: attributes petal_length. splitx: 4.7
+len of data left = 95, len of data right = 55
+results = -0.8604847264036457
+
+
+in enthropy_split: attributes petal_length. splitx: 4.5
+len of data left = 87, len of data right = 63
+results = -0.9358057233881529
+
+
+in enthropy_split: attributes petal_length. splitx: 4.9
+len of data left = 104, len of data right = 46
+results = -0.9528920327838427
+
+
+in enthropy_split: attributes petal_length. splitx: 4.0
+len of data left = 66, len of data right = 84
+results = -0.8968354654072652
+
+
+in enthropy_split: attributes petal_length. splitx: 4.6
+len of data left = 90, len of data right = 60
+results = -0.9145479214344163
+
+
+in enthropy_split: attributes petal_length. splitx: 3.3
+len of data left = 53, len of data right = 97
+results = -0.7571009818367737
+
+
+in enthropy_split: attributes petal_length. splitx: 3.9
+len of data left = 61, len of data right = 89
+results = -0.8636346641949003
+
+
+in enthropy_split: attributes petal_length. splitx: 3.5
+len of data left = 55, len of data right = 95
+results = -0.7932161216570113
+
+
+in enthropy_split: attributes petal_length. splitx: 4.2
+len of data left = 73, len of data right = 77
+results = -0.9172683327103417
+
+
+in enthropy_split: attributes petal_length. splitx: 3.6
+len of data left = 56, len of data right = 94
+results = -0.8082189499405551
+
+
+in enthropy_split: attributes petal_length. splitx: 4.4
+len of data left = 79, len of data right = 71
+results = -0.9141666058419835
+
+
+in enthropy_split: attributes petal_length. splitx: 4.1
+len of data left = 69, len of data right = 81
+results = -0.9089314026430304
+
+
+in enthropy_split: attributes petal_length. splitx: 4.8
+len of data left = 99, len of data right = 51
+results = -0.903351832200376
+
+
+in enthropy_split: attributes petal_length. splitx: 4.3
+len of data left = 75, len of data right = 75
+results = -0.9182958340544896
+
+
+in enthropy_split: attributes petal_length. splitx: 5.0
+len of data left = 108, len of data right = 42
+results = -1.003350886251059
+
+
+in enthropy_split: attributes petal_length. splitx: 3.8
+len of data left = 58, len of data right = 92
+results = -0.8337843129364264
+
+
+in enthropy_split: attributes petal_length. splitx: 3.7
+len of data left = 57, len of data right = 93
+results = -0.8216667490424753
+
+
+in enthropy_split: attributes petal_length. splitx: 5.1
+len of data left = 116, len of data right = 34
+results = -1.1142678430488393
+
+
+in enthropy_split: attributes petal_length. splitx: 3.0
+len of data left = 51, len of data right = 99
+results = -0.7072906432620666
+
+
+in enthropy_split: attributes petal_length. splitx: 6.0
+len of data left = 141, len of data right = 9
+results = -1.4842099301427731
+
+
+in enthropy_split: attributes petal_length. splitx: 5.9
+len of data left = 139, len of data right = 11
+results = -1.4601100239697826
+
+
+in enthropy_split: attributes petal_length. splitx: 5.6
+len of data left = 131, len of data right = 19
+results = -1.3560847240129361
+
+
+in enthropy_split: attributes petal_length. splitx: 5.8
+len of data left = 137, len of data right = 13
+results = -1.4353000123989905
+
+
+in enthropy_split: attributes petal_length. splitx: 6.6
+len of data left = 147, len of data right = 3
+results = -1.552670264564161
+
+
+in enthropy_split: attributes petal_length. splitx: 6.3
+len of data left = 145, len of data right = 5
+results = -1.5304520649323843
+
+
+in enthropy_split: attributes petal_length. splitx: 6.1
+len of data left = 144, len of data right = 6
+results = -1.5191239334011961
+
+
+in enthropy_split: attributes petal_length. splitx: 5.3
+len of data left = 120, len of data right = 30
+results = -1.18668460398535
+
+
+in enthropy_split: attributes petal_length. splitx: 5.5
+len of data left = 125, len of data right = 25
+results = -1.2682734124061352
+
+
+in enthropy_split: attributes petal_length. splitx: 6.7
+len of data left = 149, len of data right = 1
+results = -1.5743313880649628
+
+
+in enthropy_split: attributes petal_length. splitx: 6.9
+len of data left = 150, len of data right = 0
+results = -1.584962500721156
+
+
+in enthropy_split: attributes petal_length. splitx: 5.7
+len of data left = 134, len of data right = 16
+results = -1.3966439729423834
+
+
+in enthropy_split: attributes petal_length. splitx: 6.4
+len of data left = 146, len of data right = 4
+results = -1.541632777602583
+
+
+in enthropy_split: attributes petal_length. splitx: 5.4
+len of data left = 122, len of data right = 28
+results = -1.2203789373011944
+
+
+in enthropy_split: attributes petal_length. splitx: 5.2
+len of data left = 118, len of data right = 32
+results = -1.1513840721417543
+
+gains [(6.9, 3.169925001442312), (1.0, 3.159293888786119), (6.7, 3.159293888786119), (1.1, 3.148531028061133), (6.6, 3.137632765285317), (1.2, 3.126595278323739), (6.4, 3.126595278323739), (6.3, 3.1154145656535404), (6.1, 3.104086434122352), (6.0, 3.0691724308639294), (5.9, 3.045072524690939), (1.3, 3.0450725246909385), (5.8, 3.0202625131201466), (5.7, 2.9816064736635397), (5.6, 2.941047224734092), (1.4, 2.883598325282349), (5.5, 2.8532359131272913), (5.4, 2.8053414380223503), (5.3, 2.7716471047065063), (5.2, 2.73634657286291), (5.1, 2.6992303437699956), (1.5, 2.639555083651886), (5.0, 2.588313386972215), (4.9, 2.5378545335049987), (4.5, 2.5207682241093092), (4.3, 2.5032583347756456), (4.2, 2.502230833431498), (4.6, 2.4995104221555726), (4.4, 2.4991291065631396), (4.1, 2.4938939033641865), (4.8, 2.488314332921532), (4.0, 2.481797966128421), (1.6, 2.473390328733821), (3.9, 2.4485971649160563), (4.7, 2.445447227124802), (3.8, 2.4187468136575827), (3.7, 2.4066292497636312), (3.6, 2.3931814506617113), (3.5, 2.3781786223781674), (1.7, 2.34630760674529), (3.3, 2.3420634825579296), (3.0, 2.2922531439832228), (1.9, 2.2516291673878226)]
+
+called enthropy_split with attribute = petal_length and best split x= 6.9
+
+in enthropy_split: attributes petal_length. splitx: 6.9
+len of data left = 150, len of data right = 0
+results = -1.584962500721156
+
+p[attribute] = -1.584962500721156
+in selectSplittingAttribute = petal_width
+
+in enthropy_split: attributes petal_width. splitx: 0.2
+len of data left = 34, len of data right = 116
+results = -1.1142678430488393
+
+
+in enthropy_split: attributes petal_width. splitx: 0.4
+len of data left = 48, len of data right = 102
+results = -0.761345106024134
+
+
+in enthropy_split: attributes petal_width. splitx: 0.3
+len of data left = 41, len of data right = 109
+results = -0.9654476494015449
+
+
+in enthropy_split: attributes petal_width. splitx: 0.1
+len of data left = 6, len of data right = 144
+results = -1.5191239334011963
+
+
+in enthropy_split: attributes petal_width. splitx: 0.5
+len of data left = 49, len of data right = 101
+results = -0.7206249385363921
+
+
+in enthropy_split: attributes petal_width. splitx: 0.6
+len of data left = 50, len of data right = 100
+results = -0.6666666666666666
+
+
+in enthropy_split: attributes petal_width. splitx: 1.4
+len of data left = 86, len of data right = 64
+results = -0.9414460835119827
+
+
+in enthropy_split: attributes petal_width. splitx: 1.5
+len of data left = 98, len of data right = 52
+results = -0.919386848250709
+
+
+in enthropy_split: attributes petal_width. splitx: 1.3
+len of data left = 78, len of data right = 72
+results = -0.915979471799973
+
+
+in enthropy_split: attributes petal_width. splitx: 1.6
+len of data left = 102, len of data right = 48
+results = -0.8954048360915583
+
+
+in enthropy_split: attributes petal_width. splitx: 1.0
+len of data left = 57, len of data right = 93
+results = -0.8216667490424753
+
+
+in enthropy_split: attributes petal_width. splitx: 1.1
+len of data left = 60, len of data right = 90
+results = -0.8546546045622749
+
+
+in enthropy_split: attributes petal_width. splitx: 1.8
+len of data left = 116, len of data right = 34
+results = -1.1142678430488393
+
+
+in enthropy_split: attributes petal_width. splitx: 1.2
+len of data left = 65, len of data right = 85
+results = -0.8915883594258674
+
+
+in enthropy_split: attributes petal_width. splitx: 1.7
+len of data left = 104, len of data right = 46
+results = -0.8991530600376171
+
+
+in enthropy_split: attributes petal_width. splitx: 2.5
+len of data left = 150, len of data right = 0
+results = -1.584962500721156
+
+
+in enthropy_split: attributes petal_width. splitx: 1.9
+len of data left = 121, len of data right = 29
+results = -1.2037211123626634
+
+
+in enthropy_split: attributes petal_width. splitx: 2.1
+len of data left = 133, len of data right = 17
+results = -1.3833462600357118
+
+
+in enthropy_split: attributes petal_width. splitx: 2.2
+len of data left = 136, len of data right = 14
+results = -1.4226135158710032
+
+
+in enthropy_split: attributes petal_width. splitx: 2.0
+len of data left = 127, len of data right = 23
+results = -1.298635824561193
+
+
+in enthropy_split: attributes petal_width. splitx: 2.4
+len of data left = 147, len of data right = 3
+results = -1.552670264564161
+
+
+in enthropy_split: attributes petal_width. splitx: 2.3
+len of data left = 144, len of data right = 6
+results = -1.5191239334011961
+
+gains [(2.5, 3.169925001442312), (2.4, 3.137632765285317), (0.1, 3.1040864341223524), (2.3, 3.104086434122352), (2.2, 3.007576016592159), (2.1, 2.9683087607568677), (2.0, 2.883598325282349), (1.9, 2.7886836130838195), (0.2, 2.6992303437699956), (1.8, 2.6992303437699956), (0.3, 2.5504101501227012), (1.4, 2.5264085842331387), (1.5, 2.504349348971865), (1.3, 2.500941972521129), (1.7, 2.4841155607587733), (1.6, 2.4803673368127144), (1.2, 2.4765508601470234), (1.1, 2.439617105283431), (1.0, 2.4066292497636312), (0.4, 2.34630760674529), (0.5, 2.305587439257548), (0.6, 2.2516291673878226)]
+
+called enthropy_split with attribute = petal_width and best split x= 2.5
+
+in enthropy_split: attributes petal_width. splitx: 2.5
+len of data left = 150, len of data right = 0
+results = -1.584962500721156
+
+p[attribute] = -1.584962500721156
+gain = {'sepal_width': 3.169925001442312, 'petal_length': 3.169925001442312, 'petal_width': 3.169925001442312}

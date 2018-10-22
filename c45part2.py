@@ -163,37 +163,41 @@ def selectSplittingAttribute(attributes, df, threshold):
         #if attribute is continuous
         print("in selectSplittingAttribute = {}".format(attribute))
         if not isinstance(df[attribute].iloc[0], str):
-            one_gain,bestsplit_x = find_best_split(df, attribute)
-            p[attribute] = enthropy_split(df, attribute, bestsplit_x)
+            (bestsplit_x, one_gain) = find_best_split(df, attribute)
+            print("called enthropy_split with attribute = {} and best split x= {}".format(attribute, bestsplit_x))
+            p[attribute] = one_gain #enthropy_split(df, attribute, bestsplit_x)
+            print("p[attribute] = {}".format(p[attribute]))
         else:
             # has no continuous attributes, only discrete
             bestsplit_x=None
             p[attribute] = enthropy_attribute(df, attribute)
 
-        gain[attribute] = (p0 - p[attribute], bestsplit_x)
+        gain[attribute] = (p0 - p[attribute])
 
-
+    print("gain = {}".format(gain))
     #gg = sorted(gain, key=lambda x:x[0], reverse=True)
     #print("gg = {}".format(gg))
     #best = gg[0][0]
 
-
-    best = max(gain.keys(), key=(lambda key: gain[key]))
+    best = max(gain.keys(), key=(lambda key: gain[key][0]))
     print("best = {}".format(best))
+
     if gain[best][0] > threshold:
-        print("returning in selectSplittingAttribute {}".format(gain[best]))
-        return gg[0]
+        print("returning in selectSplittingAttribute {},{}".format(best, gain[best][1]))
+        return (best, gain[best][1])
     return None
 
 def enthropy_split(df, attribute, split_x):
     split_x = float(split_x)
-    #print("attributes {}. splitx: {}".format(df[attribute], split_x))
+    print("\nin enthropy_split: attributes {}. splitx: {}".format(attribute, split_x))
     
-    data_left = df.loc[df[attribute] <= split_x]
-    data_right = df.loc[df[attribute] > split_x]
+    data_left = df[df[attribute] <= split_x]#df.loc[df[attribute] <= split_x]
+    data_right = df[df[attribute] > split_x]#df.loc[df[attribute] > split_x]
+    print("len of data left = {}, len of data right = {}".format(len(data_left), len(data_right)))
     left_calc = (-1.0*data_left.shape[0]/df.shape[0])*enthropy(data_left) 
     right_calc = (-1.0*data_right.shape[0]/df.shape[0])*enthropy(data_right) 
     result = left_calc + right_calc
+    print("results = {}\n".format(float(result)))
     return float(result)
 
 def find_best_split(df, attribute):
@@ -207,7 +211,6 @@ def find_best_split(df, attribute):
 
     #print("{}".format(gain))
     gain = sorted(gain, key=lambda x:x[1], reverse=True)
-    
     print("gains {}\n".format(gain))
     return gain[0]
 
@@ -327,3 +330,5 @@ class Tree(object):
 
 if __name__ == "__main__":
     main(sys.argv)
+
+
