@@ -10,34 +10,32 @@ import xml.etree.ElementTree as ET
 
 xmlRoot = 'Tree name = \"test\"'
 xmltree = ET.Element("tree", name="test")
-domain_dictionary = dict()
 
 def main(argv):
     final = callC45(argv)
     print(final)
 
 def callC45(argv, data_section=None):
-    data, attributes, opt_restrictions_file, xmlfile = parse(argv, data_section)
+    data, attributes, opt_restrictions_file = parse(argv, data_section)
 
     # Reading and saving domain file
-    domain_tree = ET.parse(xmlfile)
-    root = domain_tree.getroot()
-    for child in root:
-        counter = 0
-        for grandchild in child:
-            temp = str(grandchild.attrib['name'])
-            domain_dictionary[temp] = counter
-            counter += 1
+    #domain_tree = ET.parse(xmlfile)
+    #root = domain_tree.getroot()
+    #for child in root:
+    #    counter = 0
+    #    for grandchild in child:
+    #        temp = str(grandchild.attrib['name'])
+    #        domain_dictionary[temp] = counter
+    #        counter += 1
 
     tree = Tree()
-    c45(data, attributes, tree, 0, '')
+    c45(data, attributes, tree, 1.0, '')
 
     tree = tree.children[0][1]
-    tree.makexml(xmltree)
+    tree.makexml(xmltree, data)
 
     #ET.dump(xmltree)
     final_str = ET.tostring(xmltree, method='xml').decode("utf-8")
-
 
     return final_str
 
@@ -46,51 +44,89 @@ def callC45(argv, data_section=None):
 # currentEdge: group name of the variable name <Ex. Democrat if splitOnVariable is Political Party>
 # we might not need these last two values???
 def c45(df, attributes, tree, threshold, currentEdge):
-    if df['Vote'].nunique() == 1:  # all votes are same value
+    if df[df.columns[-1]].nunique() == 1:  # all votes are same value
         # Add leaf node
-        vote_value = df.Vote.unique()
-        #print("vote_value = {}".format(vote_value[0]))
+        print("1\n")
+        print("df col: {}".format(df[[df.columns[-1]]]))
+     
+        vote_value = df[df.columns[-1]].unique()
+        #print("vote_value = {}".format(vote_value))
+
+        #print("vote_value[0] = {}".format(vote_value[0]))
         leafR = Tree(vote_value[0])
         #print("1. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
         tree.add_children(leafR, currentEdge)
     elif len(attributes) == 0:
+        print("2\n")
         label_c = find_most_frequent_label(df)
         leafR = Tree(label_c)
         #print("2. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
         tree.add_children(leafR, currentEdge)
     else:
+
         best_attribute_g = selectSplittingAttribute(attributes, df, threshold)
         if best_attribute_g is None:
+            print("3.1\n")
             label_d = find_most_frequent_label(df)
             leafR = Tree(label_d)
             #print("3. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
             tree.add_children(leafR,currentEdge)
         else:
             #print("best_attribute_g = {}".format(best_attribute_g))
+            print("3.2\n")
             treeR = Tree(best_attribute_g)
             for attribute_value_v in df[best_attribute_g].unique():
                 data_frame_attribute_v = df[df[best_attribute_g] == attribute_value_v]
                 if len(data_frame_attribute_v) != 0:
+                    print("bag: {}".format(best_attribute_g))
                     remove_current_attribute = [a for a in attributes if a != best_attribute_g]
-                    tree_v = Tree()
-                    c45(data_frame_attribute_v, remove_current_attribute, tree_v, threshold, attribute_value_v)
+
+                    if isinstance(df[best_attribute_g].iloc[0],str):
+                        remove_current_attribute = [a for a in attributes if a != best_attribute_g]
+                        tree_v = Tree()
+                        c45(data_frame_attribute_v, remove_current_attribute, tree_v, threshold, attribute_value_v)
+                        #print("4. tree_v = {}, attribute_value_v = {}".format(tree_v, best_attribute_g))
+                        #print("4. tree_v = {}, attribute_value_v = {} and treeR = {}".format(tree_v, attribute_value_v, treeR))
+                        #print("tree_v")
+                        #tree_v.printT()
+                        treeR.add_children(tree_v.children[0][1], attribute_value_v)
+                    else:
+                        remove_current_attribute = attributes
+                        tree_l = Tree()
+                        tree_r = Tree()
+
+                        #IDK LOL HELP IDK I JUST DONT KNOW HELP ME
+                        c45(data_frame_attribute_v, remove_current_attribute, tree_v, threshold, attribute_value_v)
+                        treeR.add_children(tree_v.children[0][1], attribute_value_v)
+                        
+                    
+
+
+
+
+                    #if isinstance(df[best_attribute_g].iloc[0],str):
+                    #    remove_current_attribute = [a for a in attributes if a != best_attribute_g]
+                    #else:
+                    #    remove_current_attribute = attributes
+                    #tree_v = Tree()
+                    #c45(data_frame_attribute_v, remove_current_attribute, tree_v, threshold, attribute_value_v)
                     #print("4. tree_v = {}, attribute_value_v = {}".format(tree_v, best_attribute_g))
                     #print("4. tree_v = {}, attribute_value_v = {} and treeR = {}".format(tree_v, attribute_value_v, treeR))
                     #print("tree_v")
                     #tree_v.printT()
-                    treeR.add_children(tree_v.children[0][1], attribute_value_v)
+                    #treeR.add_children(tree_v.children[0][1], attribute_value_v)
+            
             #print("5. tree_r = {} and currentEdge = {}".format(treeR, currentEdge))
             tree.add_children(treeR, currentEdge)
     #return tree
 
 
 def parse(argv, data_section=None):
-    domainFileXML = argv[1]
-    trainingSetFileCSV = argv[2]
+    trainingSetFileCSV = argv[1]
     optRestrictionsFile = None
 
-    if len(argv) > 3:
-        optRestrictionsFile = argv[3]
+    if len(argv) > 2:
+        optRestrictionsFile = argv[2]
 
     if data_section is not None:
         data = data_section
@@ -102,8 +138,8 @@ def parse(argv, data_section=None):
     with open(trainingSetFileCSV) as f:
         for line in islice(f, 0, 1):
             attributes.extend(line.strip('\t\r\n\r').split(','))
-        for line in islice(f, 0, 1):
-            removeAttributes.extend(line.strip('\t\n').split(','))
+        #for line in islice(f, 0, 1):
+        #    removeAttributes.extend(line.strip('\t\n').split(','))
 
     optAttributes = []
     if optRestrictionsFile != None:
@@ -119,7 +155,7 @@ def parse(argv, data_section=None):
     for i in range(len(removeAttributesIndices), -1, -1):
         attributes.pop(i)
 
-    return data, attributes, optRestrictionsFile, domainFileXML
+    return data, attributes, optRestrictionsFile
 
 
 def selectSplittingAttribute(attributes, df, threshold):
@@ -130,22 +166,59 @@ def selectSplittingAttribute(attributes, df, threshold):
     if len(attributes) == 1:
         return None
     for attribute in attributes[:-1]:
-        # has no continuous attributes, only discrete
-        p[attribute] = enthropy_attribute(df, attribute)
+        #if attribute is continuous
+        if not isinstance(df[attribute].iloc[0], str):
+            bestsplit_x = find_best_split(df, attribute)
+            p[attribute] = enthropy_split(df, attribute, bestsplit_x)
+        else:
+            # has no continuous attributes, only discrete
+            p[attribute] = enthropy_attribute(df, attribute)
         gain[attribute] = p0 - p[attribute]
     best = max(gain.keys(), key=(lambda key: gain[key]))
     if gain[best] > threshold:
         return best
     return None
 
+def enthropy_split(df, attribute, split_x):
+    split_x = float(split_x)
+    #print("attributes {}. splitx: {}".format(df[attribute], split_x))
+    
+    data_left = df.loc[df[attribute] <= split_x]
+    data_right = df.loc[df[attribute] > split_x]
+    left_calc = (-1.0*data_left.shape[0]/df.shape[0])*enthropy(data_left) 
+    right_calc = (-1.0*data_right.shape[0]/df.shape[0])*enthropy(data_right) 
+    result = left_calc + right_calc
+    return float(result)
+
+def find_best_split(df, attribute):
+    #initialize associative arrays counts1[],...countsk[]
+    p0 = float(enthropy(df))
+    gain = []
+    unique_col_values = df[attribute].unique()
+    for col_val in unique_col_values:
+        entropy = enthropy_split(df, attribute, col_val)
+        gain.append((col_val, float(p0 - entropy)))
+
+    #print("{}".format(gain))
+    gain = sorted(gain, key=lambda x:x[1], reverse=True)
+    print("{}\n".format(gain))
+    return gain[0][0]
 
 def enthropy(df):
     numTotal = len(df)
-    totalObama = df[df['Vote'] == 'Obama']
-    probObama = len(totalObama) * 1.0 / numTotal
-    totalMcCain = numTotal - len(totalObama)
-    probMcCain = totalMcCain * 1.0 / numTotal
-    att_entropy = -probMcCain * math.log(probMcCain, 2) + (-probObama * math.log(probObama, 2))
+    att_entropy = 0;
+    #totalObama = df[df[final_colname] == 'Obama']
+    #probObama = len(totalObama) * 1.0 / numTotal
+    #totalMcCain = numTotal - len(totalObama)
+    #probMcCain = totalMcCain * 1.0 / numTotal
+    #att_entropy = -probMcCain * math.log(probMcCain, 2) + (-probObama * math.log(probObama, 2))
+
+    unique_col_values = df[df.columns[-1]].unique()
+    for col_val in unique_col_values:
+        numAppearance = len(df[df[df.columns[-1]] == col_val])
+        probAppearance = numAppearance*1.0 / numTotal
+        if probAppearance != 0:
+            att_entropy += (-probAppearance*math.log(probAppearance,2))
     return att_entropy
 
 
@@ -156,22 +229,23 @@ def enthropy_attribute(df, attribute):
     for i in unique_col_values:
         total_attribute_i = df[df[attribute] == i]
         total_attribute_length = len(total_attribute_i)
-        totalObama = total_attribute_i[total_attribute_i['Vote'] == 'Obama']
-        probObama = len(totalObama) * 1.0 / total_attribute_length
-        totalMcCain = total_attribute_length - len(totalObama)
-        probMcCain = totalMcCain * 1.0 / total_attribute_length
-        if probMcCain == 0:
-            att_entropy = -(probObama * math.log(probObama, 2))
-        elif probObama == 0:
-            att_entropy = -probMcCain * math.log(probMcCain, 2)
-        else:
-            att_entropy = (-probMcCain * math.log(probMcCain, 2) - (probObama * math.log(probObama, 2)))
+        att_entropy = enthropy(total_attribute_i)
+        #totalObama = total_attribute_i[total_attribute_i[final_colname] == 'Obama']
+        #probObama = len(totalObama) * 1.0 / total_attribute_length
+        #totalMcCain = total_attribute_length - len(totalObama)
+        #probMcCain = totalMcCain * 1.0 / total_attribute_length
+        #if probMcCain == 0:
+        #    att_entropy = -(probObama * math.log(probObama, 2))
+        #elif probObama == 0:
+        #    att_entropy = -probMcCain * math.log(probMcCain, 2)
+        #else:
+        #    att_entropy = (-probMcCain * math.log(probMcCain, 2) - (probObama * math.log(probObama, 2)))
         enthropy += att_entropy * (total_attribute_length / len(df))
     return enthropy
 
 
 def find_most_frequent_label(df):
-    groupby_Votes = df.groupby('Vote').size()
+    groupby_Votes = df.groupby(df.columns[-1]).size()
     max = Series.idxmax(groupby_Votes)
     return max
 
@@ -226,10 +300,11 @@ class Tree(object):
                 grandchild[1].returnprintT()
 
 
-    def makexml(self, root):
-        if (self.name == "Obama" or self.name == "McCain"):
-            numxml = domain_dictionary[self.name]
-            dec_attr = {"end": "{}".format(numxml), "choice": "{}".format(self.name), "p": "1"}
+    def makexml(self, root, df):
+        unique_col_values = df[df.columns[-1]].unique()
+        if (self.name in unique_col_values):
+            
+            dec_attr = {"choice": "{}".format(self.name)}
             b = ET.SubElement(root, "decision", attrib=dec_attr)
         else:
             node_attr = {"var": "{}".format(self.name)}
@@ -237,10 +312,9 @@ class Tree(object):
 
         for child in self.children:
             if child[1].name is not None:
-                numfromxmlfile = domain_dictionary[child[0]]
-                edge_attr = {"var": "{}".format(child[0]), "num": "{}".format(numfromxmlfile)}
+                edge_attr = {"var": "{}".format(child[0])}
                 c = ET.SubElement(b, "edge", attrib=edge_attr)
-                child[1].makexml(c)
+                child[1].makexml(c,df)
 
 
 
