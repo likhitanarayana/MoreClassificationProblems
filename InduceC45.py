@@ -44,11 +44,11 @@ def callC45(argv, data_section=None, mod_attributes=None):
 # currentEdge: group name of the variable name <Ex. Democrat if splitOnVariable is Political Party>
 # we might not need these last two values???
 def c45(df, attributes, tree, threshold, currentEdge):
-    print("\nc45 attributes = {}, df =".format(attributes))
+    #print("\nc45 attributes = {}, df =".format(attributes))
     #print(df)
     if df[df.columns[-1]].nunique() == 1:  # all votes are same value
         # Add leaf node
-        print("1 found leaf!\n")
+        #print("1 found leaf!\n")
         #print("df col: {}".format(df[[df.columns[-1]]]))
      
         vote_value = df[df.columns[-1]].unique()
@@ -56,37 +56,37 @@ def c45(df, attributes, tree, threshold, currentEdge):
 
         #print("vote_value[0] = {}".format(vote_value[0]))
         leafR = Tree(vote_value[0])
-        print("1. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
+        #print("1. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
         tree.add_children(leafR, currentEdge)
     elif len(attributes) == 0:
-        print("2\n")
+        #print("2\n")
         label_c = find_most_frequent_label(df)
         leafR = Tree(label_c)
-        print("2. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
+        #print("2. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
         tree.add_children(leafR, currentEdge)
     else:
-        print("in else")
-        print("attributes = {}, df =".format(attributes))
+        #print("in else")
+        #print("attributes = {}, df =".format(attributes))
         #print(df)
         best_attribute_g, best_split_x = selectSplittingAttribute(attributes, df, threshold)
-        print("in c45 best attribute to split on = {} with value {}".format(best_attribute_g, best_split_x))
+        #print("in c45 best attribute to split on = {} with value {}".format(best_attribute_g, best_split_x))
         if best_attribute_g is None:
-            print("3.1\n")
+            #print("3.1\n")
             label_d = find_most_frequent_label(df)
             leafR = Tree(label_d)
-            print("3. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
+            #print("3. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
             tree.add_children(leafR,currentEdge)
         else:
             #print("best_attribute_g = {}".format(best_attribute_g))
-            print("#3.2\n")
+            #print("#3.2\n")
             treeR = Tree(best_attribute_g)
-            print("dataframe with attribute = {}".format(best_attribute_g))
+            #print("dataframe with attribute = {}".format(best_attribute_g))
             #print(df[best_attribute_g])
             if isinstance(df[best_attribute_g].iloc[0], str):
                 for attribute_value_v in df[best_attribute_g].unique():
                     data_frame_attribute_v = df[df[best_attribute_g] == attribute_value_v]
                     if len(data_frame_attribute_v) != 0:
-                        print("bag: {}".format(best_attribute_g))
+                        #print("bag: {}".format(best_attribute_g))
                         remove_current_attribute = [a for a in attributes if a != best_attribute_g]
 
 
@@ -109,7 +109,7 @@ def c45(df, attributes, tree, threshold, currentEdge):
                 data_frame_attribute_v = df[df[best_attribute_g] <= best_split_x]
                 left_edge = '{} less_than_or_equal_to {}'.format(best_attribute_g, best_split_x)
                 right_edge = '{} greater_than {}'.format(best_attribute_g, best_split_x)
-                print("right edge = {}, left edge = {}".format(right_edge, left_edge))
+                #print("right edge = {}, left edge = {}".format(right_edge, left_edge))
                 c45(data_frame_attribute_v, remove_current_attribute, tree_l, threshold, left_edge)
                 data_frame_attribute_v = df[df[best_attribute_g] > best_split_x]
                 c45(data_frame_attribute_v, remove_current_attribute, tree_r, threshold, right_edge)
