@@ -15,21 +15,25 @@ def KNN(D, d, k):
         #calculate the distance between d and row
         attribute_length = len(row)-2
         for attribute in range(attribute_length):
+            #print("attribute = {}".format(attribute))
             distance_to_dprime = 0
-            distance_to_dprime += np.square(d[attribute] - row[attribute])
+            #print("d[attribute] = {} and row[attribute]={}".format(d[attribute], row[attribute]))
+            distance_to_dprime += np.square(float(d[attribute]) - float(row[attribute]))
         sqrt_distance = np.sqrt(distance_to_dprime)
         distances.append((sqrt_distance, row[len(row)-1]))
 
     sort_distances = sorted(distances, key=lambda x:x[0])
+    #sort_distances.reverse()
+    #print("distances = {}".format(sort_distances))
     neighbors_classification = []
 
     for x in range(k):
         neighbors_classification.append(sort_distances[x][1])
 
-    print("neighbors = {}".format(neighbors_classification))
+    #print("neighbors = {}".format(neighbors_classification))
 
     counter = Counter(neighbors_classification)
-    print("classify = {}".format(counter.most_common(1)[0][0]))
+    #print("classify = {}".format(counter.most_common(1)[0][0]))
     return counter.most_common(1)[0][0]
 
 
@@ -47,19 +51,41 @@ def one_hot_encode(dataset):
     return dataset
 
 
+def classify_whole_dataset(dataset, k):
+    """
+
+    :param dataset: pandas dataframe (beacause some have headers and others don't)
+    :param k: num of centroids
+    :return: accuracy
+    """
+    dataset = one_hot_encode(dataset)
+    correct = 0
+    for i in range(0, len(dataset)):
+        classify = dataset.iloc[i]
+        predicted = KNN(dataset, classify, k)
+        #print("correct = {}".format(classify[-1]))
+        if predicted == classify[-1]:
+            correct += 1
+    total_classified = len(dataset)
+    accuracy = correct*1.0/total_classified
+    print("correctly classified = {}".format(correct))
+    print("overall accuracy = {}".format(accuracy))
+    return accuracy
+
+
 def main(argv):
     training_dataset = argv[1]
     k = int(argv[2])
 
-    training_dataset = pd.read_csv(training_dataset, header=None)
+    training_dataset = pd.read_csv(training_dataset)
 
-    training_dataset = one_hot_encode(training_dataset)
+    #training_dataset = one_hot_encode(training_dataset)
 
     #print("dataset =")
     #print(training_dataset)
-    classify = training_dataset.iloc[0]
-    KNN(training_dataset, classify, k)
-
+    #classify = training_dataset.iloc[0]
+    #KNN(training_dataset, classify, k)
+    classify_whole_dataset(training_dataset, k)
 
 if __name__ == "__main__":
     main(sys.argv)

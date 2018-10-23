@@ -80,6 +80,15 @@ def random_forest_classify(trees, data, dataset):
 
 
 def cross_fold_validation(data, dataset, num_attributes, num_data_points, num_trees, num_folds=10):
+    """
+    :param data: pandas dataframe
+    :param dataset: csv file name of dataset
+    :param num_attributes: number of attributes used
+    :param num_data_points: number of data points used
+    :param num_trees: number of trees constructed
+    :param num_folds: number of folds in cross fold validation
+    :return: overall accuracy of random forest
+    """
     total_correctly_classified = pd.DataFrame(columns=['RowID', 'Actual', 'Predicted'])
     correct_classified = 0
     for i in range(0, num_folds):
