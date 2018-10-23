@@ -70,7 +70,7 @@ def c45(df, attributes, tree, threshold, currentEdge):
         #print(df)
         best_attribute_g, best_split_x = selectSplittingAttribute(attributes, df, threshold)
         #print("in c45 best attribute to split on = {} with value {}".format(best_attribute_g, best_split_x))
-        if best_attribute_g is None:
+        if best_attribute_g == None:
             #print("3.1\n")
             label_d = find_most_frequent_label(df)
             leafR = Tree(label_d)

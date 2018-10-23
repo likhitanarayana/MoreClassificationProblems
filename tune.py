@@ -69,9 +69,11 @@ def tune_tree(argv):
     dataset = argv[1]
     tree_tune = []
     data = pd.read_csv(dataset)
-    for num_attributes in range(1, len(data.columns)-1):
-        for num_data_points in range(10, int(data.shape[0]/5)+1):
-            for num_trees in range(5, 15):
+    print("num data points = {}".format(int(data.shape[0]/2)+1))
+    print("num attributes = {}".format(len(data.columns)-1))
+    for num_attributes in range(1, len(data.columns)):
+        for num_data_points in range(20, int(data.shape[0]/2)+1, 25):
+            for num_trees in range(5, 15, 5):
                 accuracy = cross_fold_validation(data, dataset, num_attributes, num_data_points, num_trees)
                 print("acc: {} num att: {} num points: {} num trees: {}".format(accuracy, num_attributes, num_data_points, num_trees))
                 tree_tune.append((accuracy, num_attributes, num_data_points, num_trees))
