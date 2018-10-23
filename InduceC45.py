@@ -15,8 +15,8 @@ def main(argv):
     final = callC45(argv)
     print(final)
 
-def callC45(argv, data_section=None):
-    data, attributes, opt_restrictions_file = parse(argv, data_section)
+def callC45(argv, data_section=None, mod_attributes=None):
+    data, attributes, opt_restrictions_file = parse(argv, data_section, mod_attributes)
 
     # Reading and saving domain file
     #domain_tree = ET.parse(xmlfile)
@@ -29,7 +29,7 @@ def callC45(argv, data_section=None):
     #        counter += 1
 
     tree = Tree()
-    c45(data, attributes, tree, 1.0, '')
+    c45(data, attributes, tree, .10, '')
 
     tree = tree.children[0][1]
     tree.makexml(xmltree, data)
@@ -45,40 +45,43 @@ def callC45(argv, data_section=None):
 # we might not need these last two values???
 def c45(df, attributes, tree, threshold, currentEdge):
     print("\nc45 attributes = {}, df =".format(attributes))
-    print(df)
+    #print(df)
     if df[df.columns[-1]].nunique() == 1:  # all votes are same value
         # Add leaf node
         print("1 found leaf!\n")
-        print("df col: {}".format(df[[df.columns[-1]]]))
+        #print("df col: {}".format(df[[df.columns[-1]]]))
      
         vote_value = df[df.columns[-1]].unique()
         #print("vote_value = {}".format(vote_value))
 
         #print("vote_value[0] = {}".format(vote_value[0]))
         leafR = Tree(vote_value[0])
-        #print("1. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
+        print("1. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
         tree.add_children(leafR, currentEdge)
     elif len(attributes) == 0:
         print("2\n")
         label_c = find_most_frequent_label(df)
         leafR = Tree(label_c)
-        #print("2. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
+        print("2. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
         tree.add_children(leafR, currentEdge)
     else:
         print("in else")
-        (best_attribute_g, best_split_x) = selectSplittingAttribute(attributes, df, threshold)
+        print("attributes = {}, df =".format(attributes))
+        #print(df)
+        best_attribute_g, best_split_x = selectSplittingAttribute(attributes, df, threshold)
         print("in c45 best attribute to split on = {} with value {}".format(best_attribute_g, best_split_x))
         if best_attribute_g is None:
             print("3.1\n")
             label_d = find_most_frequent_label(df)
             leafR = Tree(label_d)
-            #print("3. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
+            print("3. leafR = {}, currentEdge = {}".format(leafR, currentEdge))
             tree.add_children(leafR,currentEdge)
         else:
             #print("best_attribute_g = {}".format(best_attribute_g))
             print("#3.2\n")
             treeR = Tree(best_attribute_g)
-
+            print("dataframe with attribute = {}".format(best_attribute_g))
+            #print(df[best_attribute_g])
             if isinstance(df[best_attribute_g].iloc[0], str):
                 for attribute_value_v in df[best_attribute_g].unique():
                     data_frame_attribute_v = df[df[best_attribute_g] == attribute_value_v]
@@ -104,17 +107,20 @@ def c45(df, attributes, tree, threshold, currentEdge):
 
                 #IDK LOL HELP IDK I JUST DONT KNOW HELP ME
                 data_frame_attribute_v = df[df[best_attribute_g] <= best_split_x]
-                c45(data_frame_attribute_v, remove_current_attribute, tree_l, threshold, '<= {}'.format(best_attribute_g))
+                left_edge = '{} less_than_or_equal_to {}'.format(best_attribute_g, best_split_x)
+                right_edge = '{} greater_than {}'.format(best_attribute_g, best_split_x)
+                print("right edge = {}, left edge = {}".format(right_edge, left_edge))
+                c45(data_frame_attribute_v, remove_current_attribute, tree_l, threshold, left_edge)
                 data_frame_attribute_v = df[df[best_attribute_g] > best_split_x]
-                c45(data_frame_attribute_v, remove_current_attribute, tree_r, threshold, '> {}'.format(best_attribute_g))
-                treeR.add_children(tree_r.children[0][1], attribute_value_v)
-                treeR.add_children(tree_l.children[0][1], attribute_value_v)
+                c45(data_frame_attribute_v, remove_current_attribute, tree_r, threshold, right_edge)
+                treeR.add_children(tree_r.children[0][1], right_edge)
+                treeR.add_children(tree_l.children[0][1], left_edge)
 
             tree.add_children(treeR, currentEdge)
     #return tree
 
 
-def parse(argv, data_section=None):
+def parse(argv, data_section=None, mod_attributes=None):
     trainingSetFileCSV = argv[1]
     optRestrictionsFile = None
 
@@ -126,27 +132,30 @@ def parse(argv, data_section=None):
     else:
         data = pd.read_csv(trainingSetFileCSV, header=0, skiprows=[1, 2])
 
-    attributes = []
-    removeAttributes = []
-    with open(trainingSetFileCSV) as f:
-        for line in islice(f, 0, 1):
-            attributes.extend(line.strip('\t\r\n\r').split(','))
-        #for line in islice(f, 0, 1):
-        #    removeAttributes.extend(line.strip('\t\n').split(','))
+    if mod_attributes is None:
+        attributes = []
+        removeAttributes = []
+        with open(trainingSetFileCSV) as f:
+            for line in islice(f, 0, 1):
+                attributes.extend(line.strip('\t\r\n\r').split(','))
+            #for line in islice(f, 0, 1):
+            #       removeAttributes.extend(line.strip('\t\n').split(','))
 
-    optAttributes = []
-    if optRestrictionsFile != None:
-        optFile = open(optRestrictionsFile, 'r')
-        for line in optFile:
-            if (line.strip('\t\n') != ""):
-                optAttributes.extend(line.strip('\t\n').split(','))
-    removeAttributes = list((map(int, removeAttributes)))
-    optAttributes = list(map(int, optAttributes))
+        optAttributes = []
+        if optRestrictionsFile != None:
+            optFile = open(optRestrictionsFile, 'r')
+            for line in optFile:
+                if (line.strip('\t\n') != ""):
+                    optAttributes.extend(line.strip('\t\n').split(','))
+        removeAttributes = list((map(int, removeAttributes)))
+        optAttributes = list(map(int, optAttributes))
 
-    removeAttributesIndices = [i for i, v in enumerate(optAttributes) if v != 1]
+        removeAttributesIndices = [i for i, v in enumerate(optAttributes) if v != 1]
 
-    for i in range(len(removeAttributesIndices), -1, -1):
-        attributes.pop(i)
+        for i in range(len(removeAttributesIndices), -1, -1):
+            attributes.pop(i)
+    else:
+        attributes = mod_attributes
 
     return data, attributes, optRestrictionsFile
 
@@ -161,9 +170,9 @@ def selectSplittingAttribute(attributes, df, threshold):
         return None
     for attribute in attributes[:-1]:
         #if attribute is continuous
-        print("in selectSplittingAttribute = {}".format(attribute))
+        #print("in selectSplittingAttribute = {}".format(attribute))
         if not isinstance(df[attribute].iloc[0], str):
-            one_gain,bestsplit_x = find_best_split(df, attribute)
+            bestsplit_x,one_gain = find_best_split(df, attribute)
             p[attribute] = enthropy_split(df, attribute, bestsplit_x)
         else:
             # has no continuous attributes, only discrete
@@ -172,6 +181,7 @@ def selectSplittingAttribute(attributes, df, threshold):
 
         gain[attribute] = (p0 - p[attribute], bestsplit_x)
 
+    #print("in select splitting attribute gain = {}".format(gain))
 
     #gg = sorted(gain, key=lambda x:x[0], reverse=True)
     #print("gg = {}".format(gg))
@@ -179,21 +189,23 @@ def selectSplittingAttribute(attributes, df, threshold):
 
 
     best = max(gain.keys(), key=(lambda key: gain[key]))
-    print("best = {}".format(best))
+    #print("best = {} and gain[best] = {}".format(best, gain[best][0]))
     if gain[best][0] > threshold:
-        print("returning in selectSplittingAttribute {}".format(gain[best]))
-        return gg[0]
-    return None
+        #print("returning in selectSplittingAttribute {}".format(gain[best]))
+        return best, gain[best][1]
+    return None, None
 
 def enthropy_split(df, attribute, split_x):
     split_x = float(split_x)
-    #print("attributes {}. splitx: {}".format(df[attribute], split_x))
+    #print("\nin enthropy_split: attributes {}. splitx: {}".format(attribute, split_x))
     
     data_left = df.loc[df[attribute] <= split_x]
     data_right = df.loc[df[attribute] > split_x]
-    left_calc = (-1.0*data_left.shape[0]/df.shape[0])*enthropy(data_left) 
-    right_calc = (-1.0*data_right.shape[0]/df.shape[0])*enthropy(data_right) 
+    #print("len data_left = {}, len data_right = {}".format(len(data_left), len(data_right)))
+    left_calc = (1.0*data_left.shape[0]/df.shape[0])*enthropy(data_left)
+    right_calc = (1.0*data_right.shape[0]/df.shape[0])*enthropy(data_right)
     result = left_calc + right_calc
+    #print("result = {}\n".format(result))
     return float(result)
 
 def find_best_split(df, attribute):
@@ -207,8 +219,9 @@ def find_best_split(df, attribute):
 
     #print("{}".format(gain))
     gain = sorted(gain, key=lambda x:x[1], reverse=True)
-    
-    print("gains {}\n".format(gain))
+
+    #print("gains {}\n".format(gain))
+    #print("returning gain[0] = {}".format(gain[0]))
     return gain[0]
 
 def enthropy(df):
@@ -231,11 +244,14 @@ def enthropy(df):
 
 def enthropy_attribute(df, attribute):
     numTotal = len(df)
-    enthropy = 0
+    enthropy_num = 0
     unique_col_values = df[attribute].unique()
     for i in unique_col_values:
         total_attribute_i = df[df[attribute] == i]
         total_attribute_length = len(total_attribute_i)
+        print("total attribute i = {}".format(total_attribute_i))
+        print("type = {}".format(type(total_attribute_i)))
+        print
         att_entropy = enthropy(total_attribute_i)
         #totalObama = total_attribute_i[total_attribute_i[final_colname] == 'Obama']
         #probObama = len(totalObama) * 1.0 / total_attribute_length
@@ -247,8 +263,8 @@ def enthropy_attribute(df, attribute):
         #    att_entropy = -probMcCain * math.log(probMcCain, 2)
         #else:
         #    att_entropy = (-probMcCain * math.log(probMcCain, 2) - (probObama * math.log(probObama, 2)))
-        enthropy += att_entropy * (total_attribute_length / len(df))
-    return enthropy
+        enthropy_num += att_entropy * (total_attribute_length / len(df))
+    return enthropy_num
 
 
 def find_most_frequent_label(df):
@@ -319,7 +335,7 @@ class Tree(object):
 
         for child in self.children:
             if child[1].name is not None:
-                edge_attr = {"var": "{}".format(child[0])}
+                edge_attr = {"var": "{}".format(child[0]), "num": "{}".format(-1)}
                 c = ET.SubElement(b, "edge", attrib=edge_attr)
                 child[1].makexml(c,df)
 
